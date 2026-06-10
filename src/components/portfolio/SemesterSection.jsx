@@ -7,7 +7,7 @@ import LoadingSkeleton from '../common/LoadingSkeleton'
 function ActivityGroup({ title, icon: Icon, activities, startIndex }) {
   if (!activities.length) {
     return (
-      <div className="p-8 rounded-2xl border-2 border-dashed border-olive-200 dark:border-olive-700 text-center text-olive-500 dark:text-cream-400">
+      <div className="p-8 rounded-2xl border-2 border-dashed border-olive-300 dark:border-olive-600 bg-white/60 dark:bg-olive-800/40 text-center text-olive-700 dark:text-cream-300">
         No {title.toLowerCase()} added yet.
       </div>
     )
@@ -41,17 +41,17 @@ export default function SemesterSection({ semester, activities, loading }) {
   return (
     <AnimatedSection
       id={`semester-${semester.id}`}
-      className="py-16 px-4 scroll-mt-24"
+      className="py-16 px-4 scroll-mt-24 odd:bg-cream-200/40 dark:odd:bg-olive-800/20"
     >
       <div className="max-w-6xl mx-auto">
-        <div className="mb-10 pb-6 border-b border-olive-200 dark:border-olive-700">
-          <span className="text-sm font-medium text-olive-500 uppercase tracking-wider">
+        <div className="mb-10 pb-6 border-b border-olive-300 dark:border-olive-600">
+          <span className="text-sm font-semibold text-olive-600 dark:text-olive-300 uppercase tracking-wider">
             Semester {semester.id}
           </span>
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-olive-900 dark:text-cream-50 mt-1">
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-olive-800 dark:text-cream-50 mt-1">
             {semester.title}
           </h2>
-          <p className="text-olive-600 dark:text-cream-300 mt-2">{semester.subtitle}</p>
+          <p className="text-olive-700 dark:text-cream-200 mt-2 font-medium">{semester.subtitle}</p>
         </div>
 
         {loading ? (
