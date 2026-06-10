@@ -1,0 +1,11 @@
+// NOT USED — this project stores images as base64 in Firestore, not Firebase Storage.
+// You can skip enabling Storage in the Firebase Console.
+
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

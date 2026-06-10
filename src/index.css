@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+@theme {
+  --color-olive-50: #f6f7f2;
+  --color-olive-100: #e8ecdb;
+  --color-olive-200: #d3dbb8;
+  --color-olive-300: #b5c28f;
+  --color-olive-400: #97a86a;
+  --color-olive-500: #7a8b4e;
+  --color-olive-600: #5c6b3a;
+  --color-olive-700: #48542f;
+  --color-olive-800: #3b4428;
+  --color-olive-900: #333a24;
+
+  --color-cream-50: #fdfcfa;
+  --color-cream-100: #faf7f2;
+  --color-cream-200: #f5f0e8;
+  --color-cream-300: #ebe3d4;
+  --color-cream-400: #ddd0ba;
+
+  --color-brown-400: #a69076;
+  --color-brown-500: #8b7355;
+  --color-brown-600: #6f5c44;
+
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Source Sans 3", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-body antialiased bg-cream-100 text-olive-900 transition-colors duration-300;
+  }
+
+  .dark body,
+  body.dark {
+    @apply bg-olive-900 text-cream-100;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .print-hidden {
+    @media print {
+      display: none !important;
+    }
+  }
+
+  .print-only {
+    display: none;
+    @media print {
+      display: block !important;
+    }
+  }
+}
+
+/* Rich text editor content styling */
+.prose-portfolio p {
+  @apply mb-3 leading-relaxed;
+}
+
+.prose-portfolio ul {
+  @apply list-disc pl-5 mb-3;
+}
+
+.prose-portfolio ol {
+  @apply list-decimal pl-5 mb-3;
+}
+
+.prose-portfolio strong {
+  @apply font-semibold text-olive-800 dark:text-cream-100;
+}
+
+/* Quill editor overrides */
+.ql-container {
+  @apply rounded-b-lg border border-olive-200 dark:border-olive-700 bg-white dark:bg-olive-800 min-h-[120px];
+}
+
+.ql-toolbar {
+  @apply rounded-t-lg border border-olive-200 dark:border-olive-700 bg-cream-50 dark:bg-olive-800;
+}
+
+.ql-editor {
+  @apply text-olive-900 dark:text-cream-100 min-h-[120px];
+}
+
+/* Print-friendly layout */
+@media print {
+  body {
+    background: white !important;
+    color: #333 !important;
+  }
+
+  .dark body {
+    background: white !important;
+    color: #333 !important;
+  }
+
+  #portfolio-content {
+    break-inside: avoid;
+  }
+
+  section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
