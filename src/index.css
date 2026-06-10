@@ -84,6 +84,16 @@
   @apply font-semibold text-olive-800 dark:text-cream-100;
 }
 
+/* Rainbow frame subtle shimmer */
+@keyframes gradient-shift {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(20deg); }
+}
+
+.animate-gradient-border {
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
 /* Print-friendly layout */
 @media print {
   body {
