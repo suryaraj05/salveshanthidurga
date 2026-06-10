@@ -17,21 +17,6 @@ export const COLLECTIONS = {
   COCURRICULAR: 'cocurricular',
 }
 
-export const FRAME_STYLES = [
-  'floral-rose',
-  'floral-sunflower',
-  'floral-lavender',
-  'garden-leaves',
-  'butterfly',
-  'rainbow',
-  'golden',
-  'stained-glass',
-  'scrapbook',
-  'polaroid',
-  'notebook',
-  'wooden',
-]
-
 export const DEFAULT_PROFILE = {
   fullName: 'Salve Shanthidurga',
   subtitle: 'B.Ed Student',

@@ -5,7 +5,7 @@ import SemesterTitlesTable from './SemesterTitlesTable'
 import AnimatedSection from '../common/AnimatedSection'
 import LoadingSkeleton from '../common/LoadingSkeleton'
 
-function ActivityGroup({ title, icon: Icon, activities, startIndex }) {
+function ActivityGroup({ title, icon: Icon, activities }) {
   if (!activities.length) {
     return (
       <div className="p-6 rounded-2xl border-2 border-dashed border-olive-300 dark:border-olive-600 bg-white/60 dark:bg-olive-800/40 text-center text-olive-700 dark:text-cream-300 text-sm">
@@ -24,8 +24,8 @@ function ActivityGroup({ title, icon: Icon, activities, startIndex }) {
         <span className="text-sm text-olive-500 dark:text-cream-400">({activities.length})</span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {activities.map((activity, i) => (
-          <ActivityCard key={activity.id} activity={activity} index={startIndex + i} />
+        {activities.map((activity) => (
+          <ActivityCard key={activity.id} activity={activity} />
         ))}
       </div>
     </div>
@@ -67,13 +67,11 @@ export default function SemesterSection({ semester, activities, loading }) {
                 title="Curricular Activities"
                 icon={BookMarked}
                 activities={curricular}
-                startIndex={0}
               />
               <ActivityGroup
                 title="Co-Curricular Activities"
                 icon={Users}
                 activities={cocurricular}
-                startIndex={curricular.length}
               />
             </div>
           </>

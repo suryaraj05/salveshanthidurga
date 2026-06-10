@@ -6,7 +6,7 @@ function hasTextContent(html) {
   return text.length > 0
 }
 
-export default function ActivityCard({ activity, index = 0 }) {
+export default function ActivityCard({ activity }) {
   const images = activity.images || []
   const description = activity.description
   const showDescription = hasTextContent(description)
@@ -32,7 +32,6 @@ export default function ActivityCard({ activity, index = 0 }) {
               key={url + i}
               src={url}
               alt={`${activity.title} - image ${i + 1}`}
-              index={index + i}
               size="compact"
             />
           ))}

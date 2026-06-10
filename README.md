@@ -11,7 +11,7 @@ A modern, elegant academic portfolio for Bachelor of Education (B.Ed) students â
 ### Public Portfolio
 - Hero, About, and semester-wise content sections
 - Curricular & co-curricular activities with image galleries
-- Educational image frames (polaroid, notebook, wooden, scrapbook)
+- Clean professional image frames with subtle borders and shadows
 - Dark/light mode, search, semester filter
 - PDF export & print-friendly layout
 - Smooth animations & lazy-loaded images

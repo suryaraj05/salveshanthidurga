@@ -1,7 +1,5 @@
 import { motion } from 'framer-motion'
 import { BookOpen } from 'lucide-react'
-import ImageFrame from '../common/ImageFrame'
-
 export default function Hero({ profile }) {
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden">
@@ -19,13 +17,11 @@ export default function Hero({ profile }) {
             className="shrink-0"
           >
             {profile.photoUrl ? (
-              <div className="w-56 h-56 md:w-64 md:h-64">
-                <ImageFrame
+              <div className="w-56 h-56 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white dark:border-olive-700 shadow-lg ring-2 ring-olive-200/50 dark:ring-olive-600">
+                <img
                   src={profile.photoUrl}
                   alt={profile.fullName}
-                  index={0}
-                  size="featured"
-                  className="!rotate-0"
+                  className="w-full h-full object-cover"
                 />
               </div>
             ) : (
