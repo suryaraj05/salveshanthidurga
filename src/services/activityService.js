@@ -59,6 +59,17 @@ export async function createActivity(activity) {
   return { id: docRef.id, ...activity }
 }
 
+/** Create multiple activities in one go */
+export async function createActivities(activities) {
+  const baseOrder = Date.now()
+  const results = []
+  for (let i = 0; i < activities.length; i++) {
+    const created = await createActivity({ ...activities[i], order: baseOrder + i })
+    results.push(created)
+  }
+  return results
+}
+
 export async function updateActivity(id, type, updates) {
   if (!isFirebaseConfigured || !db) {
     throw new Error('Firebase is not configured')

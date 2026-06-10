@@ -42,7 +42,7 @@ export default function ImageUploader({
     [images, onImagesChange, onUpload, uploading]
   )
 
-  useRegisterImagePaste(pasteId, handleFiles, !uploading)
+  useRegisterImagePaste(pasteId, handleFiles, !uploading && pasteActive)
 
   const handleDrop = (e) => {
     e.preventDefault()
@@ -66,6 +66,7 @@ export default function ImageUploader({
         onMouseLeave={() => setPasteActive(false)}
         onFocus={() => setPasteActive(true)}
         onBlur={() => setPasteActive(false)}
+        onClick={() => setPasteActive(true)}
         onDragOver={(e) => {
           e.preventDefault()
           setDragOver(true)

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import {
   getActivities,
   createActivity,
+  createActivities,
   updateActivity,
   deleteActivity,
   reorderActivities,
@@ -65,6 +66,12 @@ export function useActivities() {
     return created
   }
 
+  const addActivities = async (items) => {
+    const created = await createActivities(items)
+    await fetchActivities()
+    return created
+  }
+
   const editActivity = async (id, type, updates) => {
     await updateActivity(id, type, updates)
     await fetchActivities()
@@ -92,6 +99,7 @@ export function useActivities() {
     setSemesterFilter,
     fetchActivities,
     addActivity,
+    addActivities,
     editActivity,
     removeActivity,
     reorder,

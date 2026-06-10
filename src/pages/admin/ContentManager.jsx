@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { Plus } from 'lucide-react'
+import { Plus, Layers } from 'lucide-react'
 import ContentForm from '../../components/admin/ContentForm'
+import BulkContentForm from '../../components/admin/BulkContentForm'
 import ContentDefaultsSettings from '../../components/admin/ContentDefaultsSettings'
 import ContentList from '../../components/admin/ContentList'
 import Button from '../../components/common/Button'
@@ -15,15 +16,22 @@ export default function ContentManager() {
     allActivities,
     loading,
     addActivity,
+    addActivities,
     editActivity,
     removeActivity,
     reorder,
   } = useActivities()
 
-  const [showForm, setShowForm] = useState(false)
+  // null | 'single' | 'bulk'
+  const [formMode, setFormMode] = useState(null)
   const [editing, setEditing] = useState(null)
 
-  const handleSave = async (formData) => {
+  const closeForm = () => {
+    setFormMode(null)
+    setEditing(null)
+  }
+
+  const handleSaveSingle = async (formData) => {
     try {
       if (editing) {
         await editActivity(editing.id, editing.type, {
@@ -35,20 +43,30 @@ export default function ContentManager() {
         toast.success('Content updated')
       } else {
         await addActivity(formData)
-        // Remember last used semester & type for next entry
         setDefaults({ semester: formData.semester, type: formData.type })
         toast.success('Content added')
       }
-      setShowForm(false)
-      setEditing(null)
+      closeForm()
     } catch (err) {
       toast.error(err.message || 'Failed to save')
     }
   }
 
+  const handleSaveBulk = async (items) => {
+    try {
+      await addActivities(items)
+      const last = items[items.length - 1]
+      setDefaults({ semester: last.semester, type: last.type })
+      toast.success(`${items.length} activities added`)
+      closeForm()
+    } catch (err) {
+      toast.error(err.message || 'Failed to save activities')
+    }
+  }
+
   const handleEdit = (activity) => {
     setEditing(activity)
-    setShowForm(true)
+    setFormMode('single')
   }
 
   const handleDelete = async (activity) => {
@@ -80,23 +98,39 @@ export default function ContentManager() {
             Add, edit, and reorder portfolio activities
           </p>
         </div>
-        {!showForm && (
-          <Button onClick={() => { setEditing(null); setShowForm(true) }}>
-            <Plus size={18} />
-            Add Content
-          </Button>
+        {!formMode && (
+          <div className="flex flex-wrap gap-2">
+            <Button variant="secondary" onClick={() => { setEditing(null); setFormMode('bulk') }}>
+              <Layers size={18} />
+              Bulk Add
+            </Button>
+            <Button onClick={() => { setEditing(null); setFormMode('single') }}>
+              <Plus size={18} />
+              Add One
+            </Button>
+          </div>
         )}
       </div>
 
       <ContentDefaultsSettings defaults={defaults} onSave={setDefaults} />
 
-      {showForm && (
+      {formMode === 'single' && (
         <div className="mb-8">
           <ContentForm
             initialData={editing}
             defaults={defaults}
-            onSave={handleSave}
-            onCancel={() => { setShowForm(false); setEditing(null) }}
+            onSave={handleSaveSingle}
+            onCancel={closeForm}
+          />
+        </div>
+      )}
+
+      {formMode === 'bulk' && (
+        <div className="mb-8">
+          <BulkContentForm
+            defaults={defaults}
+            onSave={handleSaveBulk}
+            onCancel={closeForm}
           />
         </div>
       )}
