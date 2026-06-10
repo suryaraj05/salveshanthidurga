@@ -1,24 +1,48 @@
 import { useCallback, useState } from 'react'
-import { Upload, X, Image as ImageIcon } from 'lucide-react'
+import { Upload, X, Image as ImageIcon, ClipboardPaste } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { useRegisterImagePaste } from '../../context/ImagePasteContext'
+import { MAX_IMAGES_PER_ITEM } from '../../utils/imageCompression'
 
 export default function ImageUploader({
   images = [],
   onImagesChange,
   onUpload,
   uploading = false,
+  pasteId = 'content-images',
 }) {
   const [dragOver, setDragOver] = useState(false)
+  const [pasteActive, setPasteActive] = useState(false)
 
   const handleFiles = useCallback(
     async (files) => {
-      if (!files?.length) return
-      if (onUpload) {
-        const urls = await onUpload(Array.from(files))
+      if (!files?.length || !onUpload || uploading) return
+
+      const fileList = Array.from(files)
+      const remaining = MAX_IMAGES_PER_ITEM - images.length
+
+      if (remaining <= 0) {
+        toast.error(`Maximum ${MAX_IMAGES_PER_ITEM} images allowed`)
+        return
+      }
+
+      const toUpload = fileList.slice(0, remaining)
+      if (fileList.length > remaining) {
+        toast.error(`Only ${remaining} more image(s) can be added`)
+      }
+
+      try {
+        const urls = await onUpload(toUpload)
         onImagesChange([...images, ...urls])
+        toast.success(toUpload.length > 1 ? 'Images added' : 'Image added')
+      } catch (err) {
+        toast.error(err.message || 'Failed to add image')
       }
     },
-    [images, onImagesChange, onUpload]
+    [images, onImagesChange, onUpload, uploading]
   )
+
+  useRegisterImagePaste(pasteId, handleFiles, !uploading)
 
   const handleDrop = (e) => {
     e.preventDefault()
@@ -37,14 +61,19 @@ export default function ImageUploader({
       </label>
 
       <div
+        tabIndex={0}
+        onMouseEnter={() => setPasteActive(true)}
+        onMouseLeave={() => setPasteActive(false)}
+        onFocus={() => setPasteActive(true)}
+        onBlur={() => setPasteActive(false)}
         onDragOver={(e) => {
           e.preventDefault()
           setDragOver(true)
         }}
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
-        className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors ${
-          dragOver
+        className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors outline-none focus:ring-2 focus:ring-olive-400 ${
+          dragOver || pasteActive
             ? 'border-olive-500 bg-olive-50 dark:bg-olive-800/50'
             : 'border-olive-200 dark:border-olive-700'
         }`}
@@ -64,10 +93,11 @@ export default function ImageUploader({
         >
           <Upload size={32} className="text-olive-400" />
           <span className="font-medium">
-            {uploading ? 'Uploading & compressing...' : 'Drag & drop or click to upload'}
+            {uploading ? 'Compressing...' : 'Drag & drop, click to upload, or Ctrl+V to paste'}
           </span>
-          <span className="text-xs text-olive-400">
-            Compressed & saved as base64 in Firestore (~200KB each, max 4)
+          <span className="text-xs text-olive-400 flex items-center gap-1">
+            <ClipboardPaste size={12} />
+            Paste works anywhere on this admin page · max {MAX_IMAGES_PER_ITEM} images (~200KB each)
           </span>
         </label>
       </div>
