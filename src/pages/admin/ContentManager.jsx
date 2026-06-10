@@ -2,12 +2,15 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Plus } from 'lucide-react'
 import ContentForm from '../../components/admin/ContentForm'
+import ContentDefaultsSettings from '../../components/admin/ContentDefaultsSettings'
 import ContentList from '../../components/admin/ContentList'
 import Button from '../../components/common/Button'
 import LoadingSkeleton from '../../components/common/LoadingSkeleton'
 import { useActivities } from '../../hooks/useActivities'
+import { useContentDefaults } from '../../hooks/useContentDefaults'
 
 export default function ContentManager() {
+  const { defaults, setDefaults } = useContentDefaults()
   const {
     allActivities,
     loading,
@@ -28,11 +31,12 @@ export default function ContentManager() {
           description: formData.description,
           semester: formData.semester,
           images: formData.images,
-          // Type change requires delete + recreate — keep same collection for edits
         })
         toast.success('Content updated')
       } else {
         await addActivity(formData)
+        // Remember last used semester & type for next entry
+        setDefaults({ semester: formData.semester, type: formData.type })
         toast.success('Content added')
       }
       setShowForm(false)
@@ -67,7 +71,7 @@ export default function ContentManager() {
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="font-display text-3xl font-bold text-olive-900 dark:text-cream-50">
             Content Manager
@@ -84,10 +88,13 @@ export default function ContentManager() {
         )}
       </div>
 
+      <ContentDefaultsSettings defaults={defaults} onSave={setDefaults} />
+
       {showForm && (
         <div className="mb-8">
           <ContentForm
             initialData={editing}
+            defaults={defaults}
             onSave={handleSave}
             onCancel={() => { setShowForm(false); setEditing(null) }}
           />

@@ -6,16 +6,18 @@ import ImageUploader from './ImageUploader'
 import { SEMESTERS, ACTIVITY_TYPES } from '../../utils/constants'
 import { uploadImages } from '../../services/imageService'
 
-const emptyForm = {
-  title: '',
-  description: '',
-  semester: 1,
-  type: ACTIVITY_TYPES.CURRICULAR,
-  images: [],
+function buildEmptyForm(defaults) {
+  return {
+    title: '',
+    description: '',
+    semester: defaults.semester,
+    type: defaults.type,
+    images: [],
+  }
 }
 
-export default function ContentForm({ initialData, onSave, onCancel }) {
-  const [form, setForm] = useState(emptyForm)
+export default function ContentForm({ initialData, defaults, onSave, onCancel }) {
+  const [form, setForm] = useState(() => buildEmptyForm(defaults))
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
 
@@ -24,14 +26,14 @@ export default function ContentForm({ initialData, onSave, onCancel }) {
       setForm({
         title: initialData.title || '',
         description: initialData.description || '',
-        semester: initialData.semester || 1,
-        type: initialData.type || ACTIVITY_TYPES.CURRICULAR,
+        semester: initialData.semester || defaults.semester,
+        type: initialData.type || defaults.type,
         images: initialData.images || [],
       })
     } else {
-      setForm(emptyForm)
+      setForm(buildEmptyForm(defaults))
     }
-  }, [initialData])
+  }, [initialData, defaults])
 
   const handleUpload = async (files) => {
     setUploading(true)
@@ -59,6 +61,13 @@ export default function ContentForm({ initialData, onSave, onCancel }) {
       <h3 className="font-display text-xl font-semibold text-olive-900 dark:text-cream-50">
         {initialData ? 'Edit Content' : 'Add New Content'}
       </h3>
+
+      {!initialData && (
+        <p className="text-xs text-olive-500 dark:text-cream-400 -mt-2">
+          Semester and type are pre-filled from your saved defaults. Change above in &quot;Default
+          for New Content&quot; anytime.
+        </p>
+      )}
 
       <div>
         <label className="block text-sm font-medium text-olive-700 dark:text-cream-200 mb-2">
