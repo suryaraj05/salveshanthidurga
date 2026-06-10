@@ -24,7 +24,8 @@ export default function Hero({ profile }) {
                   src={profile.photoUrl}
                   alt={profile.fullName}
                   index={0}
-                  className="!rotate-0 rounded-full overflow-hidden [&_img]:rounded-full [&_figure]:rounded-full"
+                  size="featured"
+                  className="!rotate-0"
                 />
               </div>
             ) : (
