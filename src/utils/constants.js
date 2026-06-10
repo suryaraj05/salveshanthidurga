@@ -20,7 +20,7 @@ export const COLLECTIONS = {
 export const FRAME_STYLES = ['polaroid', 'notebook', 'wooden', 'scrapbook', 'shadow']
 
 export const DEFAULT_PROFILE = {
-  fullName: 'Shanthi Durga',
+  fullName: 'Salve Shanthidurga',
   subtitle: 'B.Ed Student',
   introduction:
     'Passionate about shaping young minds through innovative teaching practices and reflective pedagogy.',
