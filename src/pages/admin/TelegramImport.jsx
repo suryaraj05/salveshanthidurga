@@ -22,9 +22,25 @@ export default function TelegramImport() {
         <Bot className="text-olive-600" />
         Telegram Import
       </h1>
-      <p className="text-olive-600 dark:text-cream-300 mb-8 max-w-2xl">
+      <p className="text-olive-600 dark:text-cream-300 mb-4 max-w-2xl">
         Import activities from Telegram instead of typing each one in the admin panel. Perfect
         when your content is already in a Telegram chat.
+      </p>
+      <p className="text-sm text-olive-600 dark:text-cream-300 mb-8 max-w-2xl">
+        <b>For students (no coding):</b> share{' '}
+        <code className="text-xs bg-cream-200 dark:bg-olive-700 px-1 rounded">
+          docs/HOW_TO_USE_TELEGRAM_BOT.md
+        </code>{' '}
+        or open{' '}
+        <a
+          href="https://t.me/PofolioBot"
+          target="_blank"
+          rel="noreferrer"
+          className="text-olive-600 underline inline-flex items-center gap-1"
+        >
+          @PofolioBot <ExternalLink size={12} />
+        </a>{' '}
+        and follow the steps there.
       </p>
 
       <div className="space-y-6 max-w-3xl">

@@ -2,6 +2,8 @@
 
 Import portfolio activities from Telegram instead of the admin form — ideal when your content is already in a Telegram chat.
 
+**Student / non-technical guide:** [HOW_TO_USE_TELEGRAM_BOT.md](./HOW_TO_USE_TELEGRAM_BOT.md)
+
 ## 1. Create the bot
 
 1. Open [@BotFather](https://t.me/BotFather) in Telegram
@@ -99,6 +101,31 @@ Blank line = new activity. Then send images per activity or `/skipimages`.
 | `/skipimages` | Save bulk paste without images |
 
 ## Troubleshooting
+
+### Bot does not reply at all (not even `/myid`)
+
+1. **Webhook not registered** — Open in browser (use your real setup secret from Vercel):
+   ```
+   https://salveshanthidurga.vercel.app/api/telegram/setup-webhook?secret=YOUR_TELEGRAM_SETUP_SECRET
+   ```
+   Response should include `"ok": true` from Telegram.
+
+2. **Wrong bot token** — If BotFather says *"Your token was replaced"*, copy the **new** token into Vercel `TELEGRAM_BOT_TOKEN` and redeploy.
+
+3. **Missing Vercel env vars** — All of these must be set on Vercel (not only in local `.env`):
+   - `TELEGRAM_BOT_TOKEN`
+   - `TELEGRAM_SETUP_SECRET`
+   - `SITE_URL` = `https://salveshanthidurga.vercel.app`
+   - `FIREBASE_SERVICE_ACCOUNT_JSON` (full JSON, one line)
+   - Optional: `TELEGRAM_WEBHOOK_SECRET`, `TELEGRAM_ALLOWED_CHAT_IDS`
+
+4. **Test webhook is alive** — Open:
+   ```
+   https://salveshanthidurga.vercel.app/api/telegram/webhook
+   ```
+   You should see `{"ok":true,"message":"Telegram webhook active"}`. If you see `FUNCTION_INVOCATION_FAILED`, redeploy after the latest code fix.
+
+### Other issues
 
 - **Unauthorized** — Add chat ID to `TELEGRAM_ALLOWED_CHAT_IDS` and redeploy
 - **Webhook not working** — Re-run setup-webhook URL

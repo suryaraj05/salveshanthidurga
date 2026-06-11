@@ -1,5 +1,3 @@
-import { handleTelegramUpdate } from '../lib/telegram-bot.js'
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(200).json({ ok: true, message: 'Telegram webhook active' })
@@ -18,6 +16,25 @@ export default async function handler(req, res) {
 
   try {
     const update = req.body
+    const message = update?.message
+    const text = (message?.text || message?.caption || '').trim()
+    const command = text.split(/\s/)[0]?.toLowerCase()
+
+    // Lightweight path — works even if heavier bot modules fail to load
+    if (command === '/myid' && message?.chat?.id) {
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: message.chat.id,
+          text: `Your Telegram chat ID:\n${message.chat.id}\n\nAdd this to TELEGRAM_ALLOWED_CHAT_IDS in Vercel.`,
+          parse_mode: 'HTML',
+        }),
+      })
+      return res.status(200).json({ ok: true })
+    }
+
+    const { handleTelegramUpdate } = await import('../lib/telegram-bot.js')
     await handleTelegramUpdate(update, botToken)
     return res.status(200).json({ ok: true })
   } catch (err) {

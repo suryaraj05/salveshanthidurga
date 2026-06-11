@@ -7,9 +7,25 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'GET only' })
   }
 
-  const setupSecret = process.env.TELEGRAM_SETUP_SECRET
-  if (!setupSecret || req.query.secret !== setupSecret) {
-    return res.status(401).json({ error: 'Invalid setup secret' })
+  const setupSecret = process.env.TELEGRAM_SETUP_SECRET?.trim()
+  const providedSecret = String(req.query.secret || '').trim()
+
+  if (!setupSecret) {
+    return res.status(500).json({
+      error: 'TELEGRAM_SETUP_SECRET is not set on this server.',
+      fix:
+        'Vercel → Project → Settings → Environment Variables → add TELEGRAM_SETUP_SECRET for Production → Deployments → Redeploy (required after any env change).',
+    })
+  }
+
+  if (!providedSecret || providedSecret !== setupSecret) {
+    return res.status(401).json({
+      error: 'Setup secret does not match TELEGRAM_SETUP_SECRET on this server.',
+      fix:
+        'Use the exact value from Vercel (hyphens, no spaces). Example URL: ?secret=portfolio-setup-2026 — not ?secret=portfolio setup 2026',
+      redeploy:
+        'If you just added or changed the variable, you must Redeploy before this URL will work.',
+    })
   }
 
   const botToken = process.env.TELEGRAM_BOT_TOKEN

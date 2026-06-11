@@ -1,8 +1,12 @@
-import sharp from 'sharp'
-
 const MAX_BYTES = 280_000
 
+async function getSharp() {
+  const { default: sharp } = await import('sharp')
+  return sharp
+}
+
 export async function telegramPhotoToBase64(fileId, botToken) {
+  const sharp = await getSharp()
   const fileMeta = await fetch(
     `https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`
   ).then((r) => r.json())
