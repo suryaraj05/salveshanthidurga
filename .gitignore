@@ -11,6 +11,12 @@ node_modules
 dist
 .env
 .env.local
+
+# Firebase service account keys — never commit
+*firebase-adminsdk*.json
+**/service-account*.json
+.env.vercel-json
+.env.telegram-vars
 dist-ssr
 *.local
 
