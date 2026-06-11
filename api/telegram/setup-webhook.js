@@ -29,13 +29,12 @@ export default async function handler(req, res) {
   }
 
   const botToken = process.env.TELEGRAM_BOT_TOKEN
-  const siteUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : process.env.SITE_URL
+  // Always use SITE_URL for webhooks — VERCEL_URL is a per-deployment preview hostname
+  const siteUrl = process.env.SITE_URL?.trim()?.replace(/\/$/, '')
 
   if (!botToken || !siteUrl) {
     return res.status(500).json({
-      error: 'Set TELEGRAM_BOT_TOKEN and SITE_URL (or deploy to Vercel)',
+      error: 'Set TELEGRAM_BOT_TOKEN and SITE_URL on Vercel (your public site URL, e.g. https://salveshanthidurga-portfolio.vercel.app)',
     })
   }
 

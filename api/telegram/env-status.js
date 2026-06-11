@@ -23,8 +23,10 @@ export default async function handler(req, res) {
     setupSecretLength: setupSecret ? setupSecret.length : 0,
     hint:
       'If any value is false, add it in Vercel → Settings → Environment Variables → check Production → Redeploy.',
-    setupUrlExample:
-      'https://salveshanthidurga.vercel.app/api/telegram/setup-webhook?secret=portfolio-setup-2026',
+    siteUrl: process.env.SITE_URL?.trim() || null,
+    setupUrlExample: process.env.SITE_URL
+      ? `${process.env.SITE_URL.trim().replace(/\/$/, '')}/api/telegram/setup-webhook?secret=YOUR_SETUP_SECRET`
+      : null,
     note: 'Use hyphens in the URL (portfolio-setup-2026), not spaces (portfolio setup 2026).',
   })
 }
