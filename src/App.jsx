@@ -13,6 +13,7 @@ const Login = lazy(() => import('./pages/admin/Login'))
 const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
 const ContentManager = lazy(() => import('./pages/admin/ContentManager'))
 const ProfileManager = lazy(() => import('./pages/admin/ProfileManager'))
+const TelegramImport = lazy(() => import('./pages/admin/TelegramImport'))
 
 function AdminFallback() {
   return (
@@ -54,6 +55,7 @@ export default function App() {
               <Route index element={<Dashboard />} />
               <Route path="content" element={<ContentManager />} />
               <Route path="profile" element={<ProfileManager />} />
+              <Route path="telegram" element={<TelegramImport />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

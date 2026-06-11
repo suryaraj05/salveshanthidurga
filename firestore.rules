@@ -30,5 +30,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
+
+    // Telegram bot sessions — server-only (Firebase Admin SDK)
+    match /telegram_sessions/{document} {
+      allow read, write: if false;
+    }
   }
 }

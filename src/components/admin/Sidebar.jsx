@@ -3,6 +3,7 @@ import {
   LayoutDashboard,
   FileText,
   User,
+  Bot,
   LogOut,
   Home,
   GraduationCap,
@@ -13,6 +14,7 @@ import ThemeToggle from '../common/ThemeToggle'
 const links = [
   { to: '/admin', icon: LayoutDashboard, label: 'Dashboard', end: true },
   { to: '/admin/content', icon: FileText, label: 'Content Manager' },
+  { to: '/admin/telegram', icon: Bot, label: 'Telegram Import' },
   { to: '/admin/profile', icon: User, label: 'Profile' },
 ]
 
